@@ -1,17 +1,23 @@
 from django.db import models
-from News_Portal.accounts.models import Author
-from News_Portal.parameters import POST_TYPES, post
+from parameters import POST_TYPES, post
 from django.contrib.auth.models import User
 
+class Author(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    rating = models.IntegerField(default = 0)
+
+    def update_rating(self):
+        pass
+
 class Category(models.Model):
-    name = models.CharField(unique = True)
+    name = models.CharField(max_length = 255, unique = True)
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete = models.CASCADE)
-    type = models.CharField(choices = POST_TYPES, default = post)
+    type = models.CharField(max_length = 10, choices = POST_TYPES, default = post)
     date = models.DateTimeField(auto_now_add = True)
     category = models.ManyToManyField(Category, through = 'PostCategory')
-    title = models.CharField()
+    title = models.CharField(max_length = 255)
     text = models.TextField()
     rating = models.IntegerField(default = 0)
 
