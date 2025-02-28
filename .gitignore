@@ -1,5 +1,5 @@
 /accounts/__pycache__/
-/accounts/migrations/__pycache__/
+#/accounts/migrations/__pycache__/
 /posts/__pycache__/
-/posts/migrations/__pycache__/
+#/posts/migrations/__pycache__/
 /News_Portal/__pycache__/
