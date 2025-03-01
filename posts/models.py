@@ -1,13 +1,19 @@
 from django.db import models
-from parameters import POST_TYPES, post
+from django.db.models import Sum
 from django.contrib.auth.models import User
+from parameters import *
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     rating = models.IntegerField(default = 0)
 
     def update_rating(self):
-        pass
+        a_posts = Post.objects.filter(author = self)
+        a_posts_rating = a_posts.aggregate(Sum('rating'))
+        a_comments_rating = Comment.objects.filter(user = self.user).aggregate(Sum('rating'))
+        a_posts_comments_rating = Comment.objects.filter(post__in = a_posts).aggregate(Sum('rating'))
+        self.rating = a_posts_rating['rating__sum'] * 3 + a_comments_rating['rating__sum'] + a_posts_comments_rating['rating__sum']
+        self.save()
 
 class Category(models.Model):
     name = models.CharField(max_length = 255, unique = True)
