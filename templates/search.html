@@ -7,9 +7,13 @@
 {% endblock title %}
 
 {% block content %}
-<h3>Новостей на странице: {{ news|length }}</h3>
+<h3>Новостей на странице: {{ search|length }}</h3>
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
 <hr>
-{% if news %}
+{% if search %}
        <table align="left" cellpadding="10">
            <tr>
                <th>Заголовок</th>
@@ -17,7 +21,7 @@
                <th>Превью</th>
            </tr>
 
-           {% for post in news %}
+           {% for post in search %}
            <tr align="right" valign="top">
                <td>{{ post.title|censor }}</td>
                <td>{{ post.date|date:'d.m.Y' }}</td>
