@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import Post, Author, Category
 from .filters import PostFilter
+from .forms import PostForm
+from parameters import *
+from django.urls import reverse_lazy
 
 class PostsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -46,3 +49,27 @@ class PostSearch(ListView):
         print(type(context['filterset']))
 
         return context
+
+class PostCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'
+
+    def form_valid(self, form):
+        cur_post = form.save(commit=False)
+        if 'news/' in f'{self.request}':
+            cur_post.type = news
+        else:
+            cur_post.type = post
+
+        return super().form_valid(form)
+
+class PostUpdate(UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('post_list')
