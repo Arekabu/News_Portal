@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView
 from .models import Post, Author, Category
 from .filters import PostFilter
 from .forms import PostForm
 from parameters import *
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 class PostsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -50,7 +51,8 @@ class PostSearch(ListView):
 
         return context
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('posts.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
@@ -64,7 +66,8 @@ class PostCreate(CreateView):
 
         return super().form_valid(form)
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+    permission_required = ('posts.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'

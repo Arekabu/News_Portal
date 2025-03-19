@@ -25,11 +25,17 @@ SECRET_KEY = 'django-insecure-tz4fsm-m1v337l!f%3upo!(7095ft8x9_oy-5-_^ryht*jqq72
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,7 +48,18 @@ INSTALLED_APPS = [
     'fpages',
     'posts',
     'django_filters',
+    'protect',
+    'sign',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to enable:
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.yandex',
 ]
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
 
 SITE_ID = 1
 
@@ -55,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    # Add the account middleware:
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'News_Portal.urls'
@@ -134,3 +153,29 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR / "posts",
 ]
+
+# ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_FORMS = {'signup': 'posts.forms.BasicSignupForm'}
+
+SOCIALACCOUNT_PROVIDERS = {
+    'yandex': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': 'a4173234162d45c7a7ac17987a3d16b3',
+            'secret': '50650f0f2e564e2584553138aeca4fdf',
+            'key': ''
+        }
+    }
+}

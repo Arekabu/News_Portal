@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+{% load socialaccount %}
+
+{% block content %}
+<h2> Регистрация </h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Продолжить">
+    <br>
+    <br>
+    <a href="{% provider_login_url 'yandex' method='oauth2' %}">SignUp with Yandex</a>
+
+</form>
+{% endblock %}

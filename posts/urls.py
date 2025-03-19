@@ -1,5 +1,3 @@
-from tkinter.font import names
-
 from django.urls import path
 from .views import PostsList, PostDetail, PostSearch, PostCreate, PostUpdate, PostDelete
 
