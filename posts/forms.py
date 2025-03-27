@@ -1,16 +1,26 @@
 from django import forms
-from .models import Post
+from .models import Post, Category
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
 
 class PostForm(forms.ModelForm):
-   class Meta:
+    class Meta:
        model = Post
        fields = [
            'title',
            'text',
            'author',
+           'category',
        ]
+       widgets = {
+           'category': forms.CheckboxSelectMultiple,
+       }
+       labels = {
+           'title': 'Заголовок:',
+           'text': 'Текст:',
+           'author': 'Автор:',
+           'category': 'Категория:',
+       }
 
 class BasicSignupForm(SignupForm):
 

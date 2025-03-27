@@ -6,6 +6,7 @@ from .forms import PostForm
 from parameters import *
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 class PostsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -46,9 +47,14 @@ class PostSearch(ListView):
         context = super().get_context_data(**kwargs)
         # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
-
-        print(type(context['filterset']))
-
+        categories = self.filterset.data.getlist('category')
+        get_cat = ''
+        for i in categories:
+            if i == categories[0]:
+                get_cat += f'category={i}'
+            else:
+                get_cat += f'&category={i}'
+        context['categories'] = get_cat
         return context
 
 class PostCreate(PermissionRequiredMixin, CreateView):
@@ -76,3 +82,19 @@ class PostDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
+
+@login_required
+def subscribe(request):
+    user = request.user
+    categories = [int(i) for i in request.GET.getlist('category')]
+    print_cat = ''
+    for c_pk in categories:
+        curr_cat = Category.objects.get(id=c_pk)
+        curr_cat.subscribers.add(user)
+        if c_pk == categories[-1]:
+            print_cat += f'\n {curr_cat.name}.'
+        else:
+            print_cat += f'\n {curr_cat.name},'
+    message = f'Вы успешно подписались на следующие категории:{print_cat}'
+    print(message)
+    return render(request, 'subscribe.html', {'categories':categories, 'message': message})

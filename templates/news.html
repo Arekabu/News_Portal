@@ -19,7 +19,7 @@
 
            {% for post in news %}
            <tr align="right" valign="top">
-               <td>{{ post.title|censor }}</td>
+               <td><a href="{{ post.get_absolute_url }}">{{ post.title|censor }}</a></td>
                <td>{{ post.date|date:'d.m.Y' }}</td>
                <td><p style="text-indent: 25px;" align="justify" >{{ post.text|truncatewords:20|censor }}</p></td>
            </tr>
