@@ -1,6 +1,7 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load cache %}
 
 {% block title %}
 Новости
@@ -10,7 +11,9 @@
 <h3>Новостей на странице: {{ search|length }}</h3>
     <form action="" method="get">
         {{ filterset.form.as_p }}
+        {% cache 60 filter_btn %}
         <input type="submit" value="Найти" /><br>
+        {% endcache %}
         <br>
         {% if categories %}
         <a href="{% url 'subscribe_me' %}?{{categories}}" class="btn btn-secondary btn-md">Подписаться на выбранные категории</a>
