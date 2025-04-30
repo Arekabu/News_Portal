@@ -8,5 +8,7 @@
 /News_Portal/__pycache__/
 /fpages/__pycache__/
 /protect/__pycache__/
+/protect/migrations/__pycache__/
 /sign/__pycache__/
+/sign/migrations/__pycache__/
 .env
