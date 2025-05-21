@@ -1,15 +1,16 @@
 {% extends 'flatpages/default.html' %}
 {% load socialaccount %}
+{% load i18n %}
 
 {% block content %}
-<h2> Регистрация </h2>
+<h2> {%trans 'Регистрация' %} </h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Продолжить">
+    <input type="submit" value="{%trans 'Продолжить' %}">
     <br>
     <br>
-    <a href="{% provider_login_url 'yandex' method='oauth2' %}">SignUp with Yandex</a>
+    <a href="{% provider_login_url 'yandex' method='oauth2' %}">{%trans 'Зарегистрироваться через Яндекс' %}</a>
 
 </form>
 {% endblock %}

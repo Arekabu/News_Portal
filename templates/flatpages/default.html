@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load i18n %}
+{% load tz %}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -10,12 +12,44 @@
         {% load static %}
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            .login-btn {
+            padding: 14px 28px; /* Большая кнопка */
+            background-color: #f8f9fa; /* Светлый цвет */
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: block;
+            width: auto;
+            margin: 30px auto 0; /* Отступ сверху и центрирование */
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            }
+            .login-btn:hover {
+            background-color: #e2e6ea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+        </style>
+        {% if current_time %}
+            {% if current_time.hour >= 19 or current_time.hour <= 7 %}
+                <style>
+                    body {background-color: grey;}
+                </style>
+            {% endif %}
+        {% endif %}
     </head>
     <body>
         <!-- Responsive navbar-->
+        {% get_current_timezone as TIME_ZONE %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
-                <a class="navbar-brand" href="#">Django flatpages</a>
+                <a class="navbar-brand" href="/news/">{%trans 'НОВОСТИ' %}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive"
                         aria-controls="navbarResponsive" aria-expanded="false"
@@ -25,16 +59,88 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home
-                                <span class="sr-only">(current)</span>
-                            </a>
+                            <a class="nav-link" href="/news/search">{%trans 'Фильтр' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/about/">About</a>
+                            {% if request.user.is_authenticated %}
+                                <a class="nav-link" href="/protect/index">{%trans 'Страница пользователя' %}</a>
+                            {% else %}
+                                <a class="nav-link" href="/accounts/login/">{%trans 'Страница пользователя' %}</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/">Allauth_page</a>
                         </li>
                     </ul>
                 </div>
+                {% if current_time %}
+                <span class="navbar-text">
+                    <div style="color: white;">
+                        {{ TIME_ZONE }}
+                        {{ current_time|timezone:TIME_ZONE }}
+                    </div>
+                </span>
+                {% endif %}
             </div>
+            <div class="container mt-4">
+                <table class="form-table">
+                    {% if current_time %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <tr>
+                                <td align="right">
+                                    <label for="_tz" class="col-form-label text-white white-label">{%trans 'Часовой пояс:' %}</label>
+                                </td>
+                                <td>
+                                    <select name="timezone" id="_tz" class="form-select">
+                                        {% for tz in timezones %}
+                                            <option value="{{ tz }}"{% if tz == TIME_ZONE %}selected{% endif %}>{{ tz }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary" name="set_timezone">{%trans 'Установить' %}</button>
+                                </td>
+                            </tr>
+                        </form>
+                    {% endif %}
+                    <form class="row g-3 align-items-center" action="{% url 'set_language' %}" method="POST">
+                        {% csrf_token %}
+                        <tr>
+                            <td align="right">
+                                <label for="_lang" class="col-form-label text-white white-label">{%trans 'Язык:' %}</label>
+                            </td>
+                        <input type="hidden" name="next" value="{{ redirect_to }}">
+                            <td>
+                                <select name="language" id="_lang" class="form-select">
+                                    {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+                                    {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+                                    {% get_current_language as LANGUAGE_CODE %}
+                                    {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                                        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                            {{ language.name_local }} - {{ language.code }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" name="set_language">{%trans 'Установить' %}</button>
+                            </td>
+                        </tr>
+                    </form>
+                </table>
+            </div>
+                {% if request.user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="login-btn">{%trans 'Выйти' %}</button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="login-btn">{%trans 'Войти' %}</button>
+                    </form>
+                {% endif %}
         </nav>
         <!-- Page content-->
         <div class="container">

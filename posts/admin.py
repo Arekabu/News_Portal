@@ -1,8 +1,11 @@
 from django.contrib import admin
 from .models import Author, Post, Category, Comment
+from modeltranslation.admin import TranslationAdmin
+
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ['user', 'rating']
+
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'type', 'author', 'rating', 'get_categories', 'date']
@@ -14,14 +17,25 @@ class PostAdmin(admin.ModelAdmin):
 
     get_categories.short_description = 'Categories'
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_filter = ('subscribers',)
     search_fields = ('name',)
+
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['post__title', 'user', 'text', 'rating', 'date']
     list_filter = ('rating', 'date', 'user')
     search_fields = ('text',)
+
+
+class PostAdminTranslate(TranslationAdmin):
+    model = Post
+
+
+class CategoryAdminTranslate(TranslationAdmin):
+    model = Category
+
 
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Post, PostAdmin)

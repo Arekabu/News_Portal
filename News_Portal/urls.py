@@ -16,12 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from posts.views import Index, PostsList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('protect.urls')),
+    path('', PostsList.as_view()),
     path('news/', include('posts.urls')),
     path('articles/', include('posts.urls')),
     path('sign/', include('sign.urls')),
     path('accounts/', include('allauth.urls')),
+    path('', include('protect.urls')),
+    path('index/', Index.as_view(), name='post_index'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]

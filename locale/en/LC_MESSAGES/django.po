@@ -1,0 +1,213 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-21 14:22+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\News_Portal\settings.py:145
+msgid "Русский"
+msgstr "Russian"
+
+#: .\News_Portal\settings.py:146
+msgid "Английский"
+msgstr "English"
+
+#: .\fpages\admin.py:11
+msgid "Расширенные настройки"
+msgstr "Advanced options"
+
+#: .\posts\filters.py:8
+msgid "Заголовок новости содержит:"
+msgstr "News title contains:"
+
+#: .\posts\filters.py:9
+msgid "Автор новости:"
+msgstr "Article's author:"
+
+#: .\posts\filters.py:10
+msgid "Дата новости позже:"
+msgstr "News date is later than:"
+
+#: .\posts\filters.py:11
+msgid "Категория:"
+msgstr "Category:"
+
+#: .\posts\views.py:142
+msgid "Привет Мир"
+msgstr "Hello World"
+
+#: .\templates\account\email\email_confirmation_signup_message.html:11
+msgid "Спасибо за регистрацию,"
+msgstr "Thank you for signing up,"
+
+#: .\templates\account\email\email_confirmation_signup_message.html:12
+msgid "Пожалуйста, пройдите по"
+msgstr "Please follow"
+
+#: .\templates\account\email\email_confirmation_signup_message.html:12
+msgid "ССЫЛКЕ"
+msgstr "THE LINK"
+
+#: .\templates\account\email\email_confirmation_signup_message.html:12
+msgid "для активации вашего аккаунта."
+msgstr "to activate your account."
+
+#: .\templates\daily_post.html:6 .\templates\post_created_email.html:7
+msgid "Уведомление"
+msgstr "Notification"
+
+#: .\templates\daily_post.html:9
+msgid "Здравствуйте! Новые статьи за последнюю неделю:"
+msgstr "Hello! New articles for the last week:"
+
+#: .\templates\flatpages\default.html:52
+msgid "НОВОСТИ"
+msgstr "NEWS"
+
+#: .\templates\flatpages\default.html:62
+msgid "Фильтр"
+msgstr "Filter"
+
+#: .\templates\flatpages\default.html:66 .\templates\flatpages\default.html:68
+msgid "Страница пользователя"
+msgstr "User's page"
+
+#: .\templates\flatpages\default.html:92
+msgid "Часовой пояс:"
+msgstr "Time zone:"
+
+#: .\templates\flatpages\default.html:102
+#: .\templates\flatpages\default.html:127
+msgid "Установить"
+msgstr "Set"
+
+#: .\templates\flatpages\default.html:111
+msgid "Язык:"
+msgstr "Language:"
+
+#: .\templates\flatpages\default.html:136 .\templates\protect\index.html:17
+msgid "Выйти"
+msgstr "Log out"
+
+#: .\templates\flatpages\default.html:141 .\templates\sign\login.html:19
+msgid "Войти"
+msgstr "Sign in"
+
+#: .\templates\news.html:7 .\templates\search.html:8
+msgid "Новости"
+msgstr "News"
+
+#: .\templates\news.html:11 .\templates\search.html:12
+msgid "Новостей на странице:"
+msgstr "News on the page:"
+
+#: .\templates\news.html:16 .\templates\search.html:28
+msgid "Заголовок"
+msgstr "Title"
+
+#: .\templates\news.html:17 .\templates\search.html:29
+msgid "Дата"
+msgstr "Date"
+
+#: .\templates\news.html:18 .\templates\search.html:30
+msgid "Превью"
+msgstr "Preview"
+
+#: .\templates\news.html:30 .\templates\search.html:42
+msgid "Новостей нет!"
+msgstr "No news!"
+
+#: .\templates\news.html:33 .\templates\search.html:45
+msgid "Актуально на:"
+msgstr "Relevant on:"
+
+#: .\templates\post.html:6
+msgid "Пост"
+msgstr "Post"
+
+#: .\templates\post.html:11
+msgid "Дата публикации:"
+msgstr "Publication date:"
+
+#: .\templates\post_created_email.html:10
+msgid "Здравствуй"
+msgstr "Hello"
+
+#: .\templates\post_created_email.html:10
+msgid "Новая"
+msgstr "New"
+
+#: .\templates\post_created_email.html:10
+msgid "статья"
+msgstr "article"
+
+#: .\templates\post_created_email.html:10
+msgid "в твоём любимом разделе!"
+msgstr "in your favorite section!"
+
+#: .\templates\post_delete.html:6
+msgid "Удаление статьи"
+msgstr "Deleting the article"
+
+#: .\templates\post_delete.html:8
+msgid "Удаление новости"
+msgstr "Deleting news"
+
+#: .\templates\post_delete.html:13
+msgid "Удаляем"
+msgstr "Delete"
+
+#: .\templates\protect\index.html:5
+msgid "Страница авторизованного пользователя"
+msgstr "Authorized page of user"
+
+#: .\templates\protect\index.html:6
+msgid ""
+"Здесь может содержаться персональная информация для каждого пользователя"
+msgstr "May contain personal information specific to each user."
+
+#: .\templates\protect\index.html:11
+msgid "Стать автором"
+msgstr "Become an author"
+
+#: .\templates\search.html:16
+msgid "Найти"
+msgstr "Find"
+
+#: .\templates\search.html:20
+msgid "Подписаться на выбранные категории"
+msgstr "Subscribe to selected categories"
+
+#: .\templates\sign\login.html:5
+msgid "Войти в систему"
+msgstr "Sign in"
+
+#: .\templates\sign\login.html:22 .\templates\sign\signup.html:6
+msgid "Регистрация"
+msgstr "Sign up"
+
+#: .\templates\sign\logout.html:5
+msgid "Вы вышли из системы"
+msgstr "You have been logged out"
+
+#: .\templates\sign\signup.html:10
+msgid "Продолжить"
+msgstr "Continue"
+
+#: .\templates\sign\signup.html:13
+msgid "Зарегистрироваться через Яндекс"
+msgstr "SignUp with Yandex"

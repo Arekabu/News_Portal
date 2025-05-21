@@ -1,7 +1,8 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
 {% block content %}
-<h2> Войти в систему </h2>
+<h2> {%trans 'Войти в систему' %} </h2>
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 <table>
@@ -15,8 +16,8 @@
 </tr>
 </table>
 
-<input type="submit" value="Войти">
+<input type="submit" value= "{%trans 'Войти' %}">
 </form>
 <br>
-<button> <a href="/sign/signup"> Регистрация </a></button>
+<button> <a href="/sign/signup"> {%trans 'Регистрация' %} </a></button>
 {% endblock %}

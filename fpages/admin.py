@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 class FlatPageAdmin(FlatPageAdmin):
     fieldsets = (
         (None, {'fields': ('url', 'title', 'content', 'sites')}),
-        (_('Advanced options'), {
+        (_('Расширенные настройки'), {
             'classes': ('collapse',),
             'fields': (
                 'enable_comments',

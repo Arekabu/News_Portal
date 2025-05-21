@@ -1,13 +1,20 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView
-from .models import Post, Author, Category
-from .filters import PostFilter
-from .forms import PostForm
-from parameters import *
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView, View
+from django.core.cache import cache
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.core.cache import cache
+from django.http import HttpResponse
+from django.utils.translation import gettext as _
+from django.utils import timezone
+from django.shortcuts import redirect
+from .tasks import new_post_notification
+from .models import Post, Category
+from .filters import PostFilter
+from .forms import PostForm
+from parameters import news, post
+import pytz
+
 
 class PostsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -22,6 +29,19 @@ class PostsList(ListView):
     context_object_name = 'news'
     paginate_by = 10
     paginate_orphans = 2
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['timezones'] = pytz.common_timezones
+        context['current_time'] = timezone.now()
+
+        return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+
+        return redirect(request.path)
+
 
 class PostDetail(DetailView):
     # Модель всё та же, но мы хотим получать информацию по отдельному товару
@@ -38,6 +58,7 @@ class PostDetail(DetailView):
             cache.set(f'post-{self.kwargs["pk"]}', obj)
 
         return obj
+
 
 class PostSearch(ListView):
     model = Post
@@ -66,6 +87,7 @@ class PostSearch(ListView):
         context['categories'] = get_cat
         return context
 
+
 class PostCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('posts.add_post',)
     form_class = PostForm
@@ -78,8 +100,12 @@ class PostCreate(PermissionRequiredMixin, CreateView):
             cur_post.type = news
         else:
             cur_post.type = post
+        # # cur_post.save()
+        #
+        # new_post_notification.apply_async(cur_post.pk)
 
         return super().form_valid(form)
+
 
 class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('posts.change_post',)
@@ -87,10 +113,12 @@ class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post
     template_name = 'post_edit.html'
 
+
 class PostDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
+
 
 @login_required
 def subscribe(request):
@@ -107,3 +135,10 @@ def subscribe(request):
     message = f'Вы успешно подписались на следующие категории:{print_cat}'
     print(message)
     return render(request, 'subscribe.html', {'categories':categories, 'message': message})
+
+
+class Index(View):
+    def get(self, request):
+        string = _('Привет Мир')
+
+        return HttpResponse(string)

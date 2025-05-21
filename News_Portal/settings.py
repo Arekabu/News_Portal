@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-
+from django.utils.translation import gettext_lazy as _
 import django.utils.log
 from dotenv import load_dotenv
 
@@ -42,6 +42,7 @@ AUTHENTICATION_BACKENDS = [
 
 # Application definition
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,28 +51,29 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'fpages',
-    'posts.apps.NewsConfig',
+    'django_apscheduler',
     'django_filters',
-    'protect',
-    'sign',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.yandex',
-    'django_apscheduler',
+    'fpages',
+    'posts.apps.NewsConfig',
+    'protect',
+    'sign',
 ]
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/protect/index'
 
 SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -80,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     # Add the account middleware:
     'allauth.account.middleware.AccountMiddleware',
+    'basic.middlewares.TimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'News_Portal.urls'
@@ -136,7 +139,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+
+LANGUAGES = [
+    ("ru", _("Русский")),
+    ("en", _("Английский")),
+]
 
 TIME_ZONE = 'UTC'
 
@@ -159,6 +167,11 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR / "posts",
 ]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
+
 
 # ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
@@ -196,9 +209,9 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 # формат даты, которую будет воспринимать наш задачник (вспоминаем модуль по фильтрам)
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
-
 # если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
 
 CELERY_BROKER_URL = 'redis://:'+os.getenv('REDIS_PASSWORD')+'@'+os.getenv('REDIS_ENDPOINT')+':'+os.getenv('REDIS_PORT')
 CELERY_RESULT_BACKEND = 'redis://:'+os.getenv('REDIS_PASSWORD')+'@'+os.getenv('REDIS_ENDPOINT')+':'+os.getenv('REDIS_PORT')
@@ -206,6 +219,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
 
 CACHES = {
     'default': {

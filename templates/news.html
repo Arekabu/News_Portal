@@ -1,20 +1,21 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block title %}
-Новости
+{%trans 'Новости' %}
 {% endblock title %}
 
 {% block content %}
-<h3>Новостей на странице: {{ news|length }}</h3>
+<h3>{%trans 'Новостей на странице:' %} {{ news|length }}</h3>
 <hr>
 {% if news %}
        <table align="left" cellpadding="10">
            <tr>
-               <th>Заголовок</th>
-               <th>Дата</th>
-               <th>Превью</th>
+               <th>{%trans 'Заголовок' %}</th>
+               <th>{%trans 'Дата' %}</th>
+               <th>{%trans 'Превью' %}</th>
            </tr>
 
            {% for post in news %}
@@ -26,10 +27,10 @@
            {% endfor %}
        </table>
 {% else %}
-    <h3>Новостей нет!</h3>
+    <h3>{%trans 'Новостей нет!' %}</h3>
 {% endif %}
 
-<h6>Актуально на: {% current_time '%d.%m.%Y' %}</h6>
+<h6>{%trans 'Актуально на:' %} {% current_time '%d.%m.%Y' %}</h6>
 
 {% if page_obj.has_previous %}
     <a href="?page=1">1</a>
