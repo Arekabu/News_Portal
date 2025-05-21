@@ -41,7 +41,7 @@ class PostsList(ListView):
     def post(self, request):
         request.session['django_timezone'] = request.POST['timezone']
 
-        return redirect(request.path)
+        return redirect('/')
 
 
 class PostDetail(DetailView):
