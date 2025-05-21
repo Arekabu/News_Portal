@@ -14,6 +14,7 @@ from .filters import PostFilter
 from .forms import PostForm
 from parameters import news, post
 import pytz
+from datetime import datetime
 
 
 class PostsList(ListView):
@@ -33,7 +34,7 @@ class PostsList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['timezones'] = pytz.common_timezones
-        context['current_time'] = timezone.now()
+        context['current_time'] = datetime.now(timezone.get_current_timezone())
 
         return context
 
