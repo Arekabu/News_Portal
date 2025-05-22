@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostsList, PostDetail, PostSearch, PostCreate, PostUpdate, PostDelete, subscribe
+from .views import PostsList, PostDetail, PostSearch, PostCreate, PostUpdate, PostDelete, subscribe, SharedContext
 from django.views.decorators.cache import cache_page
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
    path('<int:pk>/edit/', PostUpdate.as_view(), name='post_edit'),
    path('<int:pk>/delete/', PostDelete.as_view(), name='post_delete'),
    path('subscribe/', subscribe, name='subscribe_me'),
+   path('time_zone/', SharedContext.as_view(), name='time_zone'),
 ]

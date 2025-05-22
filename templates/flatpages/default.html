@@ -85,8 +85,9 @@
             <div class="container mt-4">
                 <table class="form-table">
                     {% if current_time %}
-                        <form method="POST">
+                        <form method="POST" action="{% url 'time_zone' %}">
                             {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
                             <tr>
                                 <td align="right">
                                     <label for="_tz" class="col-form-label text-white white-label">{%trans 'Часовой пояс:' %}</label>
@@ -106,11 +107,11 @@
                     {% endif %}
                     <form class="row g-3 align-items-center" action="{% url 'set_language' %}" method="POST">
                         {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ redirect_to }}">
                         <tr>
                             <td align="right">
                                 <label for="_lang" class="col-form-label text-white white-label">{%trans 'Язык:' %}</label>
                             </td>
-                        <input type="hidden" name="next" value="{{ redirect_to }}">
                             <td>
                                 <select name="language" id="_lang" class="form-select">
                                     {% get_available_languages as LANGUAGES %} <!-- получаем языки -->

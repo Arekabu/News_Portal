@@ -6,15 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.translation import gettext as _
-from django.utils import timezone
 from django.shortcuts import redirect
 from .tasks import new_post_notification
 from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
 from parameters import news, post
-import pytz
-from datetime import datetime
 
 
 class PostsList(ListView):
@@ -31,17 +28,18 @@ class PostsList(ListView):
     paginate_by = 10
     paginate_orphans = 2
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['timezones'] = pytz.common_timezones
-        context['current_time'] = datetime.now(timezone.get_current_timezone())
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['timezones'] = pytz.common_timezones
+    #     context['current_time'] = datetime.now(timezone.get_current_timezone())
+    #
+    #     return context
 
-        return context
-
-    def post(self, request):
-        request.session['django_timezone'] = request.POST['timezone']
-
-        return redirect('/')
+    # def post(self, request):
+    #     request.session['django_timezone'] = request.POST['timezone']
+    #
+    #     # return redirect(request.path)
+    #     return redirect('/')
 
 
 class PostDetail(DetailView):
@@ -143,3 +141,11 @@ class Index(View):
         string = _('Привет Мир')
 
         return HttpResponse(string)
+
+class SharedContext(View):
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+
+
+        next_url = request.POST.get('next', '/')
+        return redirect(next_url)
